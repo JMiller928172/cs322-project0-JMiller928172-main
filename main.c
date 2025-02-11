@@ -57,6 +57,13 @@ int main(void) {
     /******* does the user want to run vulnerable code? *******/
     vulnerable_mode = get_user_preference();
 
+    if (vulnerable_mode) {
+        printf("Great! Pizza is on the way.");
+    }
+    else {
+        printf("Great! Cheeseburgers are on the way.");
+    }
+
     /* TODO:  Write this part */
     /******* loop so that we have a chance to do fun things *******/
         /* print out this information (info leak, but helps us learn) */
@@ -99,16 +106,20 @@ void print_this_user_info(unsigned short userindex, char username[],
  *          otherwise, return false (not-vulnerable option).
  * Returns: true - if user chose to be vulnerable, false - otherwise */
 bool get_user_preference() {
-    char buffer[256] = "";          /* read from the keyboard */
-    int selection = 0;              /* user's choice */
-    /* print a menu for the 2 options */
-    printf("Make a simple menu here.  Enter stuff: ");  // you should edit this line
-    /* read input from keyboard using fgets() and sscanf() with %d */
+    char buffer[256] = "";
+    int selection = 0;
+    printf("Answer 1 if you want pizza. Answer 2 if you want cheeseburgers.");
+
     fgets(buffer, sizeof(buffer), stdin);
+
     sscanf(buffer, "%d", &selection);
-    /* if they entered 1, return true */
-    /* if they entered anything else, return false (default option is secure) */
-    return false; // you will edit this line, too
+
+
+    if (selection == 1) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /* TODO: WRITE THIS FUNCTION */
