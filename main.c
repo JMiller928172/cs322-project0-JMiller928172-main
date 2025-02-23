@@ -68,15 +68,15 @@ int main(void) {
 
 
     if (vulnerable_mode) {
-        vulnerable_mode = get_user_to_modify_vulnerable();
+        int vul_index = get_user_to_modify_vulnerable();
 
         printf("Enter a number: ");
         scanf("%d", &new_pin);
         printf("You entered: %d\n", new_pin);
 
-        change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+        change_pin_vulnerable(vul_index, user_data.user_pin, new_pin);
 
-        printf("new pin: %d\n", user_data.user_pin[user_index]);
+        printf("new pin: %d\n", user_data.user_pin[vul_index]);
     }
     else {
         int secure_index = get_user_to_modify_more_secure(num_users);
@@ -88,6 +88,12 @@ int main(void) {
 
         change_pin_more_secure(&user_data.user_pin[secure_index], new_pin, pin_length);
     }
+
+    for (i = 0; i < num_users; i++) {
+        print_this_user_info(i, user_data.user_name[i],
+                             user_data.user_pin[i], user_data.user_isAdmin[i]);
+    }
+    printf("-------------\n");
 
     return 0;
 }
