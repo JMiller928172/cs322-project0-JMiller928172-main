@@ -1,6 +1,6 @@
 /* Project 0 - Input Validation and Buffer Overruns
- * Author: TODO: add your name here
- * Purpose: create a program that does not validate input and leads to a buffer
+ * Author: Joshua Miller
+ * Purpose: Create a program that does not validate input and leads to a buffer
  *          overflow, and allows memory to directly accessed.  Also, write
  *          more secure versions of the functions that do not have these
  *          vulnerabilities.
@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <limits.h> /* contains constant USHRT_MAX */
 #include <stdlib.h> /* immediately exit the program with exit(0) */
 
 #define MAX_USERS 10    /* maximum number of users allowed */
@@ -57,11 +56,7 @@ int main(void) {
     strncpy(user_data.user_name[1], "DEFAULT USER", strlen("DEFAULT USER")+1);
     /* we have 2 users so far */
     num_users = 2;
-
-
-    /* TODO:  Write this part */
-    /******* loop so that we have a chance to do fun things *******/
-        /* print out this information (info leak, but helps us learn) */
+    
         for (i = 0; i < num_users; i++) {
             print_this_user_info(i, user_data.user_name[i],
                                  user_data.user_pin[i], user_data.user_isAdmin[i]);
@@ -92,20 +87,10 @@ int main(void) {
 
         change_pin_more_secure(&user_data.user_pin[secure_index], new_pin, pin_length);
     }
-    //
-        /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
-    /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
-            /* change the pin using the function, change_pin_more_secure */
-    /* end of loop */
 
-    /* exit program */
     return 0;
 }
 
-/* Purpose: print all information
- *          -- revealing PINS is bad! but helps us understand
- * Returns: nothing */
 void print_this_user_info(unsigned short userindex, char username[],
                           unsigned short userpin, bool userIsAdmin) {
     /* print one user at a time */
