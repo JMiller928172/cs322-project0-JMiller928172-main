@@ -65,17 +65,25 @@ int main(void) {
         printf("-------------\n");
 
 
-    vulnerable_mode = get_user_to_modify_vulnerable();
+    vulnerable_mode = get_user_preference();
 
-    printf("Enter a number: ");
-    scanf("%d", &new_pin);
-    printf("You entered: %d\n", new_pin);
+    if (vulnerable_mode) {
+        vulnerable_mode = get_user_to_modify_vulnerable();
 
-    change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+        printf("Enter a number: ");
+        scanf("%d", &new_pin);
+        printf("You entered: %d\n", new_pin);
 
-    printf("new pin: %d\n", user_data.user_pin[user_index]);
+        change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+
+        printf("new pin: %d\n", user_data.user_pin[user_index]);
+    }
+    else {
+        printf("You have selected secure mode! :D");
+    }
+    //
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
-            /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
+    /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
             /* change the pin using the function, change_pin_more_secure */
     /* end of loop */
@@ -98,7 +106,7 @@ void print_this_user_info(unsigned short userindex, char username[],
 bool get_user_preference() {
     char buffer[256] = "";
     int selection = 0;
-    printf("Answer 1 if you want pizza. Answer 2 if you want cheeseburgers.");
+    printf("Answer 1 if you want vulnerable mode. Answer anything else if you want secure mode.");
 
     fgets(buffer, sizeof(buffer), stdin);
 
@@ -116,7 +124,7 @@ int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";
     int  desired_index = 0;
 
-    printf("Enter 1 to work with the vulnerable user.");
+    printf("Which user index do you desire to work with?");
 
     fgets(buffer, sizeof(buffer), stdin);
 
