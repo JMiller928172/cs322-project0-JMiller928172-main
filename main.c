@@ -54,15 +54,6 @@ int main(void) {
     /* we have 2 users so far */
     num_users = 2;
 
-    /******* does the user want to run vulnerable code? *******/
-    vulnerable_mode = get_user_preference();
-
-    if (vulnerable_mode) {
-        printf("Great! Pizza is on the way.");
-    }
-    else {
-        printf("Great! Cheeseburgers are on the way.");
-    }
 
     /* TODO:  Write this part */
     /******* loop so that we have a chance to do fun things *******/
@@ -76,8 +67,16 @@ int main(void) {
         /******* Execute vulnerable code, or not, depending on user choice *******/
         /* if the user chose to live dangerously and run vulnerable functions */
             /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
+    vulnerable_mode = get_user_to_modify_vulnerable();
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
+    printf("Enter a number: ");
+    scanf("%d", &new_pin);
+
+    printf("You entered: %d\n", new_pin);
             /* change the pin using the function, change_pin_vulnerable */
+    change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+
+    printf("new pin: %d\n", user_data.user_pin[user_index]);
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
             /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
@@ -122,18 +121,18 @@ bool get_user_preference() {
     }
 }
 
-/* TODO: WRITE THIS FUNCTION */
-/* Purpose:  Read from the keyboard.
- *           No input validation is done in this function, so it is vulnerable.
- * Returns:  The (unvalidated) integer index that the user wants to modify. */
 int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";          /* read from the keyboard */
     int  desired_index = 0;         /* index of user to modify */
-    /* prompt the user to enter the desired index */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit program if desired */
-    /* otherwise, return the result */
-    return -1;  // you will edit this line, too
+
+    printf("Enter 1 to work with the vulnerable user.");
+
+    fgets(buffer, sizeof(buffer), stdin);
+
+    sscanf(buffer, "%d", &desired_index);
+
+
+    return desired_index;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
@@ -144,8 +143,7 @@ int get_user_to_modify_vulnerable(void) {
  *          Do not do any input validation in this intentionally vulnerable function.
  * Returns: nothing, but may have some vulnerabilities */
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
-    /* TODO: modify the desired u_pin, which can be done on one line. */
-    // does not return a value, so no return statement needed
+    u_pin[user_i] = new_pin;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
