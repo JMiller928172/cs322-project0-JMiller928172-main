@@ -57,13 +57,6 @@ int main(void) {
     /******* does the user want to run vulnerable code? *******/
     vulnerable_mode = get_user_to_modify_vulnerable();
 
-    if (vulnerable_mode) {
-        printf("Great! Pizza is on the way.");
-    }
-    else {
-        printf("Great! Cheeseburgers are on the way.");
-    }
-
     /* TODO:  Write this part */
     /******* loop so that we have a chance to do fun things *******/
         /* print out this information (info leak, but helps us learn) */
