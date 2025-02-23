@@ -136,7 +136,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>86</line>
+          <line>94</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

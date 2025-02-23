@@ -6,6 +6,7 @@
  *          vulnerabilities.
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -24,6 +25,8 @@ int get_user_to_modify_more_secure(int current_num_users);
 bool change_pin_more_secure(int u_index, unsigned short u_pin[], int new_pin);
 
 
+int validate_pin(int pin_length);
+
 int main(void) {
     struct {
         unsigned short user_isAdmin[MAX_USERS];   /* an array, true if this user is an admin */
@@ -37,6 +40,7 @@ int main(void) {
     char buffer[256] = "";          /* read from the keyboard */
     bool vulnerable_mode = false;   /* user preference to run vulnerable functions, or not */
     bool success = false;           /* did the pin change succeed */
+    int pin_length = 5;
 
     /******* set up default user accounts *******/
     /* zero out all memory in the user_data variable -- for each array */
@@ -80,7 +84,11 @@ int main(void) {
     }
     else {
         int secure_int = get_user_to_modify_more_secure(num_users);
-        printf("%d is your secure number", secure_int);
+
+        bool pinEntered = false;
+
+        validate_pin(pin_length);
+        printf("Valid PIN! Thank you! \n");
     }
     //
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
@@ -179,4 +187,32 @@ bool change_pin_more_secure(int user_i, unsigned short u_pin[], int new_pin) {
     /* validate pin */
     /* assign if valid */
     return false; // you will edit this line, too
+}
+
+int validate_pin(int pin_length) {
+    char buffer[256];
+    int new_pin = -1;
+
+    while (true) {
+        printf("Please enter your PIN: ");
+        scanf("%s", buffer);
+
+        // Verify the pin is only numbers
+        bool valid = true;
+        for (int i = 0; i < strlen(buffer); i++) {
+            if (!isdigit((unsigned char)buffer[i])) {
+                valid = false;
+                break;
+            }
+        }
+
+        // Check the pin length
+        if (valid && strlen(buffer) == pin_length) {
+            // Convert the valid string to an integer
+            sscanf(buffer, "%d", &new_pin);
+            return new_pin; // Exit the loop when a valid PIN is entered
+        } else {
+            printf("Invalid PIN. Please try again.\n");
+        }
+    }
 }
