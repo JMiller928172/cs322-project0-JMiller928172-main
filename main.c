@@ -55,7 +55,7 @@ int main(void) {
     num_users = 2;
 
     /******* does the user want to run vulnerable code? *******/
-    vulnerable_mode = get_user_preference();
+    vulnerable_mode = get_user_to_modify_vulnerable();
 
     if (vulnerable_mode) {
         printf("Great! Pizza is on the way.");
@@ -122,18 +122,18 @@ bool get_user_preference() {
     }
 }
 
-/* TODO: WRITE THIS FUNCTION */
-/* Purpose:  Read from the keyboard.
- *           No input validation is done in this function, so it is vulnerable.
- * Returns:  The (unvalidated) integer index that the user wants to modify. */
 int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";          /* read from the keyboard */
     int  desired_index = 0;         /* index of user to modify */
-    /* prompt the user to enter the desired index */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit program if desired */
-    /* otherwise, return the result */
-    return -1;  // you will edit this line, too
+
+    printf("Enter your desired index.");
+
+    fgets(buffer, sizeof(buffer), stdin);
+
+    sscanf(buffer, "%d", &desired_index);
+
+
+    return desired_index;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
