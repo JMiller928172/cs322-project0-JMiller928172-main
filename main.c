@@ -69,7 +69,9 @@ int main(void) {
             /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
     vulnerable_mode = get_user_to_modify_vulnerable();
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
+    
             /* change the pin using the function, change_pin_vulnerable */
+
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
             /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
@@ -136,8 +138,7 @@ int get_user_to_modify_vulnerable(void) {
  *          Do not do any input validation in this intentionally vulnerable function.
  * Returns: nothing, but may have some vulnerabilities */
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
-    /* TODO: modify the desired u_pin, which can be done on one line. */
-    // does not return a value, so no return statement needed
+    u_pin[user_i] = new_pin;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
