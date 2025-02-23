@@ -54,8 +54,6 @@ int main(void) {
     /* we have 2 users so far */
     num_users = 2;
 
-    /******* does the user want to run vulnerable code? *******/
-    vulnerable_mode = get_user_to_modify_vulnerable();
 
     /* TODO:  Write this part */
     /******* loop so that we have a chance to do fun things *******/
@@ -69,6 +67,7 @@ int main(void) {
         /******* Execute vulnerable code, or not, depending on user choice *******/
         /* if the user chose to live dangerously and run vulnerable functions */
             /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
+    vulnerable_mode = get_user_to_modify_vulnerable();
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
             /* change the pin using the function, change_pin_vulnerable */
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
@@ -119,7 +118,7 @@ int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";          /* read from the keyboard */
     int  desired_index = 0;         /* index of user to modify */
 
-    printf("Enter your desired index.");
+    printf("Enter 1 to work with the vulnerable user.");
 
     fgets(buffer, sizeof(buffer), stdin);
 
