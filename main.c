@@ -66,6 +66,7 @@ int main(void) {
 
     vulnerable_mode = get_user_preference();
 
+
     if (vulnerable_mode) {
         vulnerable_mode = get_user_to_modify_vulnerable();
 
@@ -102,6 +103,7 @@ void print_this_user_info(unsigned short userindex, char username[],
 bool get_user_preference() {
     char buffer[256] = "";
     int selection = 0;
+
     printf("Answer 1 if you want vulnerable mode. Answer anything else if you want secure mode.");
 
     fgets(buffer, sizeof(buffer), stdin);
@@ -120,7 +122,7 @@ int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";
     int  desired_index = 0;
 
-    printf("Enter 1 to work with the vulnerable user.");
+    printf("Enter your index: ");
 
     fgets(buffer, sizeof(buffer), stdin);
 
