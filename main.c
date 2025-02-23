@@ -206,11 +206,9 @@ int validate_pin(int pin_length) {
             }
         }
 
-        // Check the pin length
         if (valid && strlen(buffer) == pin_length) {
-            // Convert the valid string to an integer
             sscanf(buffer, "%d", &new_pin);
-            return new_pin; // Exit the loop when a valid PIN is entered
+            return new_pin;
         } else {
             printf("Invalid PIN. Please try again.\n");
         }
