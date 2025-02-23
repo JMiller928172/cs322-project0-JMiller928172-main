@@ -79,7 +79,8 @@ int main(void) {
         printf("new pin: %d\n", user_data.user_pin[user_index]);
     }
     else {
-        printf("You have selected secure mode! :D");
+        int secure_int = get_user_to_modify_more_secure(num_users);
+        printf("%d is your secure number", secure_int);
     }
     //
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
@@ -124,7 +125,7 @@ int get_user_to_modify_vulnerable(void) {
     char buffer[256] = "";
     int  desired_index = 0;
 
-    printf("Which user index do you desire to work with?");
+    printf("Enter 1 to work with the vulnerable user.");
 
     fgets(buffer, sizeof(buffer), stdin);
 
@@ -149,16 +150,18 @@ int get_user_to_modify_more_secure(int current_num_users) {
 
         fgets(buffer, sizeof(buffer), stdin);
 
-        strtol(buffer, "%d", &desired_index);
+        sscanf(buffer, "%d", &desired_index);
 
-        if (desired_index == (int)desired_index && desired_index <= (current_num_users - 1) && desired_index >= 0) {
+        if (desired_index < current_num_users && desired_index >= 0) {
             exited = true;
-            return desired_index;
+            return (int)desired_index;
         }
         else {
             printf("Wrong answer.\n");
         }
     }
+
+    return -1;
 }
 
 /* TODO:  WRITE THIS FUNCTION */
