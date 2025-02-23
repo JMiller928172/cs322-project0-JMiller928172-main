@@ -69,9 +69,14 @@ int main(void) {
             /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
     vulnerable_mode = get_user_to_modify_vulnerable();
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
-    
-            /* change the pin using the function, change_pin_vulnerable */
+    printf("Enter a number: ");
+    scanf("%d", &new_pin);
 
+    printf("You entered: %d\n", new_pin);
+            /* change the pin using the function, change_pin_vulnerable */
+    change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
+
+    printf("new pin: %d\n", user_data.user_pin[user_index]);
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
             /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
             /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
