@@ -1,15 +1,15 @@
 /* Project 0 - Input Validation and Buffer Overruns
- * Author: TODO: add your name here
- * Purpose: create a program that does not validate input and leads to a buffer
+ * Author: Joshua Miller
+ * Purpose: Create a program that does not validate input and leads to a buffer
  *          overflow, and allows memory to directly accessed.  Also, write
  *          more secure versions of the functions that do not have these
  *          vulnerabilities.
  */
 
+#include <ctype.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
-#include <limits.h> /* contains constant USHRT_MAX */
 #include <stdlib.h> /* immediately exit the program with exit(0) */
 
 #define MAX_USERS 10    /* maximum number of users allowed */
@@ -21,8 +21,10 @@ bool get_user_preference();
 int get_user_to_modify_vulnerable();
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin);
 int get_user_to_modify_more_secure(int current_num_users);
-bool change_pin_more_secure(int u_index, unsigned short u_pin[], int new_pin);
+bool change_pin_more_secure(unsigned int *user_pin, int new_pin, int pin_length);
 
+
+int validate_pin(int pin_length);
 
 int main(void) {
     struct {
@@ -37,6 +39,7 @@ int main(void) {
     char buffer[256] = "";          /* read from the keyboard */
     bool vulnerable_mode = false;   /* user preference to run vulnerable functions, or not */
     bool success = false;           /* did the pin change succeed */
+    int pin_length = 5;
 
     /******* set up default user accounts *******/
     /* zero out all memory in the user_data variable -- for each array */
@@ -53,11 +56,7 @@ int main(void) {
     strncpy(user_data.user_name[1], "DEFAULT USER", strlen("DEFAULT USER")+1);
     /* we have 2 users so far */
     num_users = 2;
-
-
-    /* TODO:  Write this part */
-    /******* loop so that we have a chance to do fun things *******/
-        /* print out this information (info leak, but helps us learn) */
+    
         for (i = 0; i < num_users; i++) {
             print_this_user_info(i, user_data.user_name[i],
                                  user_data.user_pin[i], user_data.user_isAdmin[i]);
@@ -67,33 +66,32 @@ int main(void) {
 
     vulnerable_mode = get_user_preference();
 
+
     if (vulnerable_mode) {
-        int index = get_user_to_modify_vulnerable();
+        vulnerable_mode = get_user_to_modify_vulnerable();
 
         printf("Enter a number: ");
         scanf("%d", &new_pin);
         printf("You entered: %d\n", new_pin);
 
-        change_pin_vulnerable(index, user_data.user_pin, new_pin);
+        change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
 
-        printf("new pin: %d\n", user_data.user_pin[index]);
+        printf("new pin: %d\n", user_data.user_pin[user_index]);
     }
     else {
-        printf("You are secure! :D ");
-    }
-        /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
-            /* prompt user for which user they want to work with, using get_user_to_modify_more_secure() */
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
-            /* change the pin using the function, change_pin_more_secure */
-    /* end of loop */
+        int secure_index = get_user_to_modify_more_secure(num_users);
 
-    /* exit program */
+        bool pinEntered = false;
+
+        new_pin = validate_pin(pin_length);
+        printf("Valid PIN! Thank you!\n");
+
+        change_pin_more_secure(&user_data.user_pin[secure_index], new_pin, pin_length);
+    }
+
     return 0;
 }
 
-/* Purpose: print all information
- *          -- revealing PINS is bad! but helps us understand
- * Returns: nothing */
 void print_this_user_info(unsigned short userindex, char username[],
                           unsigned short userpin, bool userIsAdmin) {
     /* print one user at a time */
@@ -105,7 +103,8 @@ void print_this_user_info(unsigned short userindex, char username[],
 bool get_user_preference() {
     char buffer[256] = "";
     int selection = 0;
-    printf("Answer 1 if you want to enter vulnerable mode. Answer anything else if you want secure mode.");
+
+    printf("Answer 1 if you want vulnerable mode. Answer anything else if you want secure mode.");
 
     fgets(buffer, sizeof(buffer), stdin);
 
@@ -138,33 +137,81 @@ void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
     u_pin[user_i] = new_pin;
 }
 
-/* TODO:  WRITE THIS FUNCTION */
-/* Purpose:  Read from the keyboard.
- *           Verify that value entered is valid. Re-prompt until satisfied.
- * Returns:  the (validated) integer index that the user wants to modify. */
 int get_user_to_modify_more_secure(int current_num_users) {
-    /* loop, unless they type EXIT_VALUE */
-    /* read input from keyboard using fgets() and sscanf() with %d */
-    /* quit the program, if the user entered the EXIT_VALUE */
-    /* perform input validation on the user's input */
-    /* if valid, return the answer */
-    /* otherwise, print an error message and loop to reprompt the user */
-    return -1; // you will edit this line, too
+    bool exited = false;
+    while (!exited) {
+        char buffer[256] = "";
+        int desired_index = -1;
+
+        printf("Please enter a valid index to modify.\n");
+
+        fgets(buffer, sizeof(buffer), stdin);
+
+        sscanf(buffer, "%d", &desired_index);
+
+        if (desired_index < current_num_users && desired_index >= 0) {
+            exited = true;
+            return (int)desired_index;
+        }
+        else {
+            printf("Wrong answer.\n");
+        }
+    }
+
+    return -1;
 }
 
-/* TODO:  WRITE THIS FUNCTION */
-/* Purpose: When passed the user's index number (user_i),
- *          the entire pin array (u_pin[]), and
- *          the new pin (new_pin),
- *          reset that user's pin.
- * Returns: true - if successfully changed, false - if unchanged
- * Note:  It is better to not pass the entire pin array --
- *        yikes the information available to this function is excessive!
- *        However, C syntax with pointers is a pain, and this makes it "feel"
- *        like a more familiar language such as Java. */
-bool change_pin_more_secure(int user_i, unsigned short u_pin[], int new_pin) {
-    /* validate index */
-    /* validate pin */
-    /* assign if valid */
-    return false; // you will edit this line, too
+bool change_pin_more_secure(unsigned int *user_pin, int new_pin, int pin_length) {
+    if (user_pin == NULL) {
+        printf("Invalid pin location.\n");
+        return false;
+    }
+
+    int temp = new_pin;
+    int count = 0;
+
+    while (temp > 0) {
+        count++;
+        temp /= 10;
+    }
+
+    if (new_pin == 0) {
+        count = 1;
+    }
+
+    if (count != pin_length) {
+        printf("Pin must be %d digits.\n", pin_length);
+        return false;
+    }
+
+    *user_pin = (unsigned int)new_pin;
+    printf("PIN successfully changed to %d.\n", *user_pin);
+    return true;
+}
+
+
+int validate_pin(int pin_length) {
+    char buffer[256];
+    int new_pin = -1;
+
+    while (true) {
+        printf("Please enter your PIN: ");
+        scanf("%s", buffer);
+
+        // Verify the pin is only numbers
+        bool valid = true;
+        for (int i = 0; i < strlen(buffer); i++) {
+            if (!isdigit((unsigned char)buffer[i])) {
+                valid = false;
+                break;
+            }
+        }
+
+        if (valid && strlen(buffer) == pin_length) {
+            sscanf(buffer, "%d", &new_pin);
+            return new_pin;
+        } else {
+            printf("Invalid PIN. Please try again.\n");
+        }
+    }
 }
