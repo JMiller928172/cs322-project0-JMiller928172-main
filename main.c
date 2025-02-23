@@ -64,16 +64,13 @@ int main(void) {
         }
         printf("-------------\n");
 
-        /******* Execute vulnerable code, or not, depending on user choice *******/
-        /* if the user chose to live dangerously and run vulnerable functions */
-            /* prompt user for which user they want to work with, using get_user_to_modify_vulnerable() */
+
     vulnerable_mode = get_user_to_modify_vulnerable();
-            /* prompt user for new PIN (this can be a function you create, or just put the code directly here */
+
     printf("Enter a number: ");
     scanf("%d", &new_pin);
-
     printf("You entered: %d\n", new_pin);
-            /* change the pin using the function, change_pin_vulnerable */
+
     change_pin_vulnerable(user_index, user_data.user_pin, new_pin);
 
     printf("new pin: %d\n", user_data.user_pin[user_index]);
@@ -97,13 +94,7 @@ void print_this_user_info(unsigned short userindex, char username[],
            userindex, username, userpin, userIsAdmin);
 }
 
-/* TODO:  WRITE THIS FUNCTION */
-/* Purpose: Ask the user if they want to run the vulnerable version, or not.
- *          Print a menu.
- *          Read from the keyboard.  If the user enters a 1,
- *          return true (vulnerable option)
- *          otherwise, return false (not-vulnerable option).
- * Returns: true - if user chose to be vulnerable, false - otherwise */
+
 bool get_user_preference() {
     char buffer[256] = "";
     int selection = 0;
@@ -122,8 +113,8 @@ bool get_user_preference() {
 }
 
 int get_user_to_modify_vulnerable(void) {
-    char buffer[256] = "";          /* read from the keyboard */
-    int  desired_index = 0;         /* index of user to modify */
+    char buffer[256] = "";
+    int  desired_index = 0;
 
     printf("Enter 1 to work with the vulnerable user.");
 
@@ -135,13 +126,7 @@ int get_user_to_modify_vulnerable(void) {
     return desired_index;
 }
 
-/* TODO:  WRITE THIS FUNCTION */
-/* Purpose: When passed the user's index number (user_i),
- *          the entire pin array (u_pin[]), and
- *          the new pin (new_pin),
- *          reset that user's pin.
- *          Do not do any input validation in this intentionally vulnerable function.
- * Returns: nothing, but may have some vulnerabilities */
+
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin) {
     u_pin[user_i] = new_pin;
 }
