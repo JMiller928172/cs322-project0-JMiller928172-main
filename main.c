@@ -22,7 +22,7 @@ bool get_user_preference();
 int get_user_to_modify_vulnerable();
 void change_pin_vulnerable(int user_i, unsigned short u_pin[], int new_pin);
 int get_user_to_modify_more_secure(int current_num_users);
-bool change_pin_more_secure(int u_index, unsigned short u_pin[], int new_pin);
+bool change_pin_more_secure(unsigned int *user_pin, int new_pin, int pin_length);
 
 
 int validate_pin(int pin_length);
@@ -83,12 +83,14 @@ int main(void) {
         printf("new pin: %d\n", user_data.user_pin[user_index]);
     }
     else {
-        int secure_int = get_user_to_modify_more_secure(num_users);
+        int secure_index = get_user_to_modify_more_secure(num_users);
 
         bool pinEntered = false;
 
-        validate_pin(pin_length);
-        printf("Valid PIN! Thank you! \n");
+        new_pin = validate_pin(pin_length);
+        printf("Valid PIN! Thank you!\n");
+
+        
     }
     //
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
@@ -172,22 +174,34 @@ int get_user_to_modify_more_secure(int current_num_users) {
     return -1;
 }
 
-/* TODO:  WRITE THIS FUNCTION */
-/* Purpose: When passed the user's index number (user_i),
- *          the entire pin array (u_pin[]), and
- *          the new pin (new_pin),
- *          reset that user's pin.
- * Returns: true - if successfully changed, false - if unchanged
- * Note:  It is better to not pass the entire pin array --
- *        yikes the information available to this function is excessive!
- *        However, C syntax with pointers is a pain, and this makes it "feel"
- *        like a more familiar language such as Java. */
-bool change_pin_more_secure(int user_i, unsigned short u_pin[], int new_pin) {
-    /* validate index */
-    /* validate pin */
-    /* assign if valid */
-    return false; // you will edit this line, too
+bool change_pin_more_secure(unsigned int *user_pin, int new_pin, int pin_length) {
+    if (user_pin == NULL) {
+        printf("Invalid pin location.\n");
+        return false;
+    }
+
+    int temp = new_pin;
+    int count = 0;
+
+    while (temp > 0) {
+        count++;
+        temp /= 10;
+    }
+
+    if (new_pin == 0) {
+        count = 1;
+    }
+
+    if (count != pin_length) {
+        printf("Pin must be %d digits.\n", pin_length);
+        return false;
+    }
+
+    *user_pin = (unsigned int)new_pin;
+    printf("PIN successfully changed to %d.\n", *user_pin);
+    return true;
 }
+
 
 int validate_pin(int pin_length) {
     char buffer[256];
