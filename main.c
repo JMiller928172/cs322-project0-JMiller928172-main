@@ -90,7 +90,7 @@ int main(void) {
         new_pin = validate_pin(pin_length);
         printf("Valid PIN! Thank you!\n");
 
-        
+        change_pin_more_secure(&user_data.user_pin[secure_index], new_pin, pin_length);
     }
     //
         /* otherwise, if the user did not want to risk it, and chose to run the more secure functions */
